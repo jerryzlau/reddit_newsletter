@@ -10,6 +10,7 @@ const breadcrumbs: Record<string, string> = {
   "/dashboard": "Dashboard",
   "/subscriptions": "Subscriptions",
   "/archive": "Archive",
+  "/digest": "Digest",
   "/settings": "Settings",
   "/invite": "Invite a Friend",
 };
@@ -27,7 +28,7 @@ export function Header() {
       <header className="md:hidden flex items-center justify-between px-4 py-3 bg-[#1a1a1a] border-b border-[#2a2a2a] sticky top-0 z-20">
         <button
           onClick={() => setMobileOpen(true)}
-          className="text-[#f0f0f0] p-1"
+          className="text-[#f0f0f0] p-1 cursor-pointer"
           aria-label="Open menu"
         >
           <Menu className="w-5 h-5" />
@@ -54,7 +55,7 @@ export function Header() {
             <Sidebar />
             <button
               onClick={() => setMobileOpen(false)}
-              className="absolute top-4 right-4 text-[#888888] hover:text-[#f0f0f0] z-50"
+              className="absolute top-4 right-4 text-[#888888] hover:text-[#f0f0f0] z-50 cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>

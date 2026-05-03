@@ -13,6 +13,9 @@ export interface NewsletterEmailProps {
   unsubscribeUrl: string;
   manageUrl: string;
   recipientEmail: string;
+  accentColor?: string;
+  showScores?: boolean;
+  introText?: string | null;
 }
 
 export interface InviteEmailProps {

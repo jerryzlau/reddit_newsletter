@@ -1,6 +1,6 @@
 "use server";
 
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { createServiceSupabaseClient } from "@/lib/supabase/service";
 import { auth } from "@clerk/nextjs/server";
 import { calcNextSendAt } from "@/lib/utils";
 import { revalidatePath } from "next/cache";
@@ -17,7 +17,7 @@ export async function saveSettings(payload: SettingsPayload): Promise<{ nextSend
 
   const nextSendAt = payload.is_active ? calcNextSendAt(payload.cadence) : null;
 
-  const supabase = await createServerSupabaseClient();
+  const supabase = createServiceSupabaseClient();
   await supabase.from("newsletter_settings").upsert({
     user_id: userId,
     cadence: payload.cadence,

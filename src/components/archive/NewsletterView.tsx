@@ -15,16 +15,14 @@ interface Section {
 
 interface NewsletterViewProps {
   subject: string | null;
-  created_at: string;
+  created_at: string | null;
   sections: Section[];
 }
 
 export function NewsletterView({ subject, created_at, sections }: NewsletterViewProps) {
-  const date = new Date(created_at).toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
+  const date = created_at
+    ? new Date(created_at).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })
+    : "—";
 
   return (
     <div className="max-w-2xl">

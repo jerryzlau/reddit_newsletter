@@ -1,4 +1,4 @@
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { createServiceSupabaseClient } from "@/lib/supabase/service";
 import { auth } from "@clerk/nextjs/server";
 import { NewsletterCard } from "@/components/archive/NewsletterCard";
 import Link from "next/link";
@@ -13,7 +13,7 @@ export default async function ArchivePage({
   const { page: pageStr } = await searchParams;
   const page = Math.max(1, parseInt(pageStr ?? "1", 10));
   const { userId } = await auth();
-  const supabase = await createServerSupabaseClient();
+  const supabase = createServiceSupabaseClient();
 
   const from = (page - 1) * PAGE_SIZE;
   const to = from + PAGE_SIZE - 1;

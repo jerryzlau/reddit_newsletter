@@ -12,7 +12,7 @@ import { formatRelativeDate } from "@/lib/utils";
 interface Invite {
   id: string;
   invitee_email: string;
-  created_at: string;
+  created_at: string | null;
   accepted_at: string | null;
 }
 

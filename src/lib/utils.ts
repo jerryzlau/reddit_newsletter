@@ -27,7 +27,8 @@ export function formatSubscriberCount(count: number): string {
   return `${count} members`;
 }
 
-export function formatRelativeDate(dateStr: string): string {
+export function formatRelativeDate(dateStr: string | null): string {
+  if (!dateStr) return "—";
   const date = new Date(dateStr);
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();

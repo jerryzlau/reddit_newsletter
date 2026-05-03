@@ -1,4 +1,4 @@
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { createServiceSupabaseClient } from "@/lib/supabase/service";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { SettingsForm } from "@/components/settings/SettingsForm";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,7 +6,7 @@ import { Separator } from "@/components/ui/separator";
 
 export default async function SettingsPage() {
   const { userId } = await auth();
-  const supabase = await createServerSupabaseClient();
+  const supabase = createServiceSupabaseClient();
 
   const [settingsRes, user] = await Promise.all([
     supabase

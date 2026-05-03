@@ -1,4 +1,4 @@
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { createServiceSupabaseClient } from "@/lib/supabase/service";
 import { auth } from "@clerk/nextjs/server";
 import { StatsCards } from "@/components/dashboard/StatsCards";
 import { RecentDigests } from "@/components/dashboard/RecentDigests";
@@ -6,7 +6,7 @@ import { EmptyState } from "@/components/dashboard/EmptyState";
 
 export default async function DashboardPage() {
   const { userId } = await auth();
-  const supabase = await createServerSupabaseClient();
+  const supabase = createServiceSupabaseClient();
 
   const [subscriptionsRes, settingsRes, newslettersRes] = await Promise.all([
     supabase.from("subscriptions").select("subreddit").eq("user_id", userId!),

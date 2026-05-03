@@ -1,4 +1,4 @@
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { createServiceSupabaseClient } from "@/lib/supabase/service";
 import { auth } from "@clerk/nextjs/server";
 import { SubredditSearch } from "@/components/subscriptions/SubredditSearch";
 import { SubscriptionsList } from "@/components/subscriptions/SubscriptionsList";
@@ -6,7 +6,7 @@ import { Separator } from "@/components/ui/separator";
 
 export default async function SubscriptionsPage() {
   const { userId } = await auth();
-  const supabase = await createServerSupabaseClient();
+  const supabase = createServiceSupabaseClient();
 
   const { data: subs } = await supabase
     .from("subscriptions")

@@ -1,66 +1,31 @@
 import type { SubredditInfo, RedditPost } from "./types";
 
-let cachedToken: string | null = null;
-let tokenExpiresAt = 0;
+const USER_AGENT = "reddit-newsletter/1.0";
 
-const USER_AGENT = `web:reddit-newsletter:v1.0 (by /u/${process.env.REDDIT_USERNAME || "reddit_newsletter_bot"})`;
-
-async function getAppOnlyToken(): Promise<string> {
-  if (cachedToken && Date.now() < tokenExpiresAt) {
-    return cachedToken;
-  }
-
-  const credentials = Buffer.from(
-    `${process.env.REDDIT_CLIENT_ID}:${process.env.REDDIT_CLIENT_SECRET}`
-  ).toString("base64");
-
-  const res = await fetch("https://www.reddit.com/api/v1/access_token", {
-    method: "POST",
-    headers: {
-      Authorization: `Basic ${credentials}`,
-      "User-Agent": USER_AGENT,
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: "grant_type=client_credentials",
-  });
-
-  if (!res.ok) {
-    throw new Error(`Reddit auth failed: ${res.status}`);
-  }
-
-  const data = await res.json();
-  cachedToken = data.access_token as string;
-  tokenExpiresAt = Date.now() + (data.expires_in - 60) * 1000;
-  return cachedToken;
-}
-
-async function redditFetch(path: string): Promise<unknown> {
-  const token = await getAppOnlyToken();
-  const res = await fetch(`https://oauth.reddit.com${path}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "User-Agent": USER_AGENT,
-    },
+async function redditFetch(url: string): Promise<unknown> {
+  const res = await fetch(url, {
+    headers: { "User-Agent": USER_AGENT },
+    next: { revalidate: 300 },
   });
   if (!res.ok) {
-    throw new Error(`Reddit API error ${res.status} for ${path}`);
+    throw new Error(`Reddit fetch error ${res.status} for ${url}`);
   }
   return res.json();
 }
 
 export async function searchSubreddits(query: string): Promise<SubredditInfo[]> {
   const data = (await redditFetch(
-    `/subreddits/search?q=${encodeURIComponent(query)}&limit=10&include_over_18=false`
+    `https://www.reddit.com/subreddits/search.json?q=${encodeURIComponent(query)}&limit=10&include_over_18=false`
   )) as { data: { children: { data: Record<string, unknown> }[] } };
 
   return data.data.children.map((child) => {
     const s = child.data;
     return {
       name: s.display_name as string,
-      display_name: `r/${s.display_name}`,
+      display_name: (s.display_name_prefixed as string) || `r/${s.display_name}`,
       title: (s.title as string) || "",
       subscribers: (s.subscribers as number) || 0,
-      icon_img: (s.icon_img as string) || "",
+      icon_img: ((s.community_icon as string) || (s.icon_img as string) || "").replace(/&amp;/g, "&"),
       public_description: (s.public_description as string) || "",
     };
   });
@@ -68,7 +33,7 @@ export async function searchSubreddits(query: string): Promise<SubredditInfo[]> 
 
 export async function getHotPosts(subreddit: string, limit: number): Promise<RedditPost[]> {
   const data = (await redditFetch(
-    `/r/${subreddit}/hot?limit=${limit}`
+    `https://www.reddit.com/r/${subreddit}/hot.json?limit=${limit}`
   )) as { data: { children: { data: Record<string, unknown> }[] } };
 
   return data.data.children.map((child) => {

@@ -1,5 +1,5 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { createServiceSupabaseClient } from "@/lib/supabase/service";
 import { sendInviteEmail } from "@/lib/resend/client";
 
 export async function POST(req: Request) {
@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     return Response.json({ error: "Invalid email" }, { status: 400 });
   }
 
-  const supabase = await createServerSupabaseClient();
+  const supabase = createServiceSupabaseClient();
   const user = await currentUser();
   const inviterName = user?.firstName
     ? [user.firstName, user.lastName].filter(Boolean).join(" ")

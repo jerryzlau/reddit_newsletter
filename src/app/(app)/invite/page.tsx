@@ -1,4 +1,4 @@
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { createServiceSupabaseClient } from "@/lib/supabase/service";
 import { auth } from "@clerk/nextjs/server";
 import { InviteForm } from "@/components/invite/InviteForm";
 import { SentInvitesTable } from "@/components/invite/SentInvitesTable";
@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default async function InvitePage() {
   const { userId } = await auth();
-  const supabase = await createServerSupabaseClient();
+  const supabase = createServiceSupabaseClient();
 
   const { data: invites } = await supabase
     .from("invites")

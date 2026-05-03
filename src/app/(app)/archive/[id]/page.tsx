@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { createServiceSupabaseClient } from "@/lib/supabase/service";
 import { auth } from "@clerk/nextjs/server";
 import { NewsletterView } from "@/components/archive/NewsletterView";
 
@@ -11,7 +11,7 @@ export default async function NewsletterDetailPage({
 }) {
   const { id } = await params;
   const { userId } = await auth();
-  const supabase = await createServerSupabaseClient();
+  const supabase = createServiceSupabaseClient();
 
   const { data: newsletter } = await supabase
     .from("newsletters")

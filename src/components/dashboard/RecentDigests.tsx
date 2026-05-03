@@ -6,7 +6,7 @@ import { formatRelativeDate } from "@/lib/utils";
 interface RecentDigest {
   id: string;
   subject: string | null;
-  created_at: string;
+  created_at: string | null;
   status: string;
   subreddits: string[];
 }

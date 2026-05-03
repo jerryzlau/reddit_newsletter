@@ -37,7 +37,7 @@ function SegmentedControl<T extends string | number>({
             type="button"
             onClick={() => onChange(opt.value)}
             className={cn(
-              "px-4 py-2 text-sm font-medium transition-colors",
+              "px-4 py-2 text-sm font-medium transition-colors cursor-pointer",
               value === opt.value
                 ? "bg-[#ff4500] text-white"
                 : "bg-[#1a1a1a] text-[#888888] hover:text-[#f0f0f0]"

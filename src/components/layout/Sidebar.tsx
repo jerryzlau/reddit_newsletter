@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   BookOpen,
   Archive,
+  Mail,
   Settings,
   UserPlus,
 } from "lucide-react";
@@ -16,6 +17,7 @@ const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/subscriptions", label: "Subscriptions", icon: BookOpen },
   { href: "/archive", label: "Archive", icon: Archive },
+  { href: "/digest", label: "Digest", icon: Mail },
   { href: "/settings", label: "Settings", icon: Settings },
   { href: "/invite", label: "Invite a Friend", icon: UserPlus },
 ];

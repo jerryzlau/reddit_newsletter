@@ -43,8 +43,9 @@ export function SubredditSearch({ subscribedNames }: SubredditSearchProps) {
       try {
         await subscribeToSubreddit(subreddit);
         toast.success(`Subscribed to r/${subreddit.name}`);
-      } catch {
-        toast.error("Failed to subscribe");
+      } catch (e) {
+        console.error("subscribe error", e);
+        toast.error(e instanceof Error ? e.message : "Failed to subscribe");
       }
     });
   }
